@@ -1,0 +1,18 @@
+#--------------------------------------------------------
+# This file is managed by Juju
+#--------------------------------------------------------
+
+log_facility=daemon
+debug={{ debug }}
+nrpe_user=nagios
+nrpe_group=nagios
+dont_blame_nrpe={{ dont_blame_nrpe }}
+server_address={{ nrpe_ipaddress or '0.0.0.0' }}
+command_timeout=60
+connection_timeout=300
+disable_syslog=0
+
+# All configuration snippets go into nrpe.d/
+include=/etc/nagios/auto-manage.cfg
+include_dir=/etc/nagios/nrpe.d/
+

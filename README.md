@@ -23,6 +23,35 @@ charmcraft pack
 juju deploy nrpe-k8s --resource nrpe-server-image=binfalse/nrpe-server:full
 ```
 
+Port Completion from Machine Charm
+==================================
+* Config
+  - [ ] `nagios_master`
+  - [x] `server_port` 
+  - [ ] `nagios_address_type`
+  - [ ] `nagios_host_context`
+  - [ ] `nagios_hostname_type`
+  - [x] `dont_blame_nrpe`
+  - [x] `debug`
+  - [ ] `disk_root`
+  - [ ] `zombies`
+  - [ ] `procs`
+  - [ ] `conntrack`
+  - [ ] `users`
+  - [ ] `monitors`
+  - [ ] `hostgroups`
+  - [ ] `hostcheck_inherit`
+  - [ ] `sub_postfix`
+* Actions
+  - [ ] `list-nrpe-checks`
+  - [ ] `run-nrpe-check`
+* Relations
+  - [ ] `nrpe`
+  - [ ] `monitors`
+  - [ ] `nrpe-external-master`
+  - [ ] `general-info`
+  - [ ] `local-monitors`
+
 Principal Relations
 ===================
 

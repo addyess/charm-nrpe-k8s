@@ -31,9 +31,7 @@ containers:
     resource: nrpe-server-image
     mounts:
       - storage: cfg
-        location: /etc/nagios/nrpe.d/
-      - storage: certs
-        location: /etc/nagios/certs/
+        location: /etc/nagios/
       - storage: plugins
         location: /usr/lib/nagios/extra/
 resources:
@@ -43,10 +41,7 @@ resources:
 storage:
   cfg:
     type: filesystem
-    location: /etc/nagios/nrpe.d/
-  certs:
-    type: filesystem
-    location: /etc/nagios/certs/
+    location: /etc/nagios/
   plugins:
     type: filesystem
     location: /usr/lib/nagios/extra/

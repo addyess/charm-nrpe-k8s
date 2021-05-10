@@ -7,15 +7,17 @@
 """Charm the service."""
 
 import logging
-import urllib
+from pathlib import Path
+
+from jinja2 import Environment, FileSystemLoader
 
 from ops.charm import CharmBase
 from ops.framework import StoredState
 from ops.main import main
-from ops.model import ActiveStatus, MaintenanceStatus
+from ops.model import ActiveStatus
 
 logger = logging.getLogger(__name__)
-
+NRPE_CFG = Path("/etc")  / "nagios" / "nrpe.cfg"
 
 class NrpeCharm(CharmBase):
     state = StoredState()
@@ -27,6 +29,7 @@ class NrpeCharm(CharmBase):
         self.framework.observe(self.on.install, self._on_install)
         self.framework.observe(self.on.config_changed, self._on_config_changed)
         self.state.set_default(allowed_hosts=[])
+        self.state.set_default(nrpe_ssl=False)
 
     def _on_install(self, _):
         pass
@@ -35,6 +38,8 @@ class NrpeCharm(CharmBase):
         """Handle the config-changed event"""
         # Get the nrpe-server container so we can configure/manipulate it
         container = self.unit.get_container("nrpe-server")
+        # Write config to file
+        self._generate_nrpe_conf()
         # Create a new config layer
         layer = self._nrpe_server_layer()
         # Get the current config
@@ -53,6 +58,17 @@ class NrpeCharm(CharmBase):
         # All is well, set an ActiveStatus
         self.unit.status = ActiveStatus()
 
+    def _generate_nrpe_conf(self):
+        env = Environment(loader=FileSystemLoader("templates"))
+        template = env.get_template("nrpe.tmpl")
+        config = {
+            "debug": self.config["debug"],
+            "dont_blame_nrpe" : self.config["dont_blame_nrpe"],
+            "nrpe_ipaddress": ""
+        }
+        with open(NRPE_CFG, "w") as f_out:
+            f_out.write(template.render(**config))
+
     def _nrpe_server_layer(self):
         """Returns a Pebble configuration layer for nrpe-server"""
         return {
@@ -67,7 +83,7 @@ class NrpeCharm(CharmBase):
                     "environment": {
                         "ALLOWEDHOSTS": ",".join(self.state.allowed_hosts),
                         "PORT": self.config["server_port"],
-                        "SSL": False,
+                        "SSL": "yes" if self.state.nrpe_ssl else "",
                     },
                 }
             },
