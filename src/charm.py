@@ -21,6 +21,7 @@ class NrpeCharm(CharmBase):
     state = StoredState()
 
     """Charm the service."""
+
     def __init__(self, *args):
         super().__init__(*args)
         self.framework.observe(self.on.install, self._on_install)
@@ -66,12 +67,11 @@ class NrpeCharm(CharmBase):
                     "environment": {
                         "ALLOWEDHOSTS": ",".join(self.state.allowed_hosts),
                         "PORT": self.config["server_port"],
-                        "SSL": False
-                    }
+                        "SSL": False,
+                    },
                 }
-            }
+            },
         }
-
 
 
 if __name__ == "__main__":

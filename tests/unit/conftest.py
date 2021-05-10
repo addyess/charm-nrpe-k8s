@@ -8,4 +8,3 @@ def harness():
     _harness = Harness(NrpeCharm)
     _harness.begin()
     yield _harness
-
