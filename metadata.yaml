@@ -1,0 +1,39 @@
+# Copyright 2021 Adam Dyess
+# See LICENSE file for licensing details.
+name: nrpe-k8s
+description: |
+  Nagios is a host/service/network monitoring and management system.  The
+  purpose of this addon is to allow you to execute Nagios plugins on a
+  remote host in as transparent a manner as possible.  This program runs
+  in a side care containerand processes command execution requests from the
+  check_nrpe plugin on the Nagios host.
+summary: |
+  Nagios Remote Plugin Executor Server
+
+containers:
+  nrpe-server:
+    resource: nrpe-server-image
+    mounts:
+      - storage: cfg
+        location: /etc/nagios/nrpe.d/
+      - storage: certs
+        location: /etc/nagios/certs/
+      - storage: plugins
+        location: /usr/lib/nagios/extra/
+
+resources:
+  nrpe-server-image:
+    type: oci-image
+    description: OCI image for nrpe-server (https://hub.docker.com/r/binfalse/nrpe-server)
+
+storage:
+  cfg:
+    type: filesystem
+    location: /etc/nagios/nrpe.d/
+  certs:
+    type: filesystem
+    location: /etc/nagios/certs/
+  plugins:
+    type: filesystem
+    location: /usr/lib/nagios/extra/
+
