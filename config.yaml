@@ -1,0 +1,107 @@
+options:
+  nagios_master:
+    default: "None"
+    type: string
+    description: |
+        IP address of the nagios master from which to allow rsync access
+  server_port:
+    default: 5666
+    type: int
+    description: |
+        Port on which nagios-nrpe-server will listen
+  nagios_address_type:
+    default: "private"
+    type: string
+    description: |
+        Determines whether the nagios host check should use the private
+        or public IP address of an instance.  Can be "private" or "public".
+  nagios_host_context:
+    default: "juju"
+    type: string
+    description: |
+        A string which will be prepended to instance name to set the host name
+        in nagios. So for instance the hostname would be something like:
+            juju-postgresql-0
+        If you're running multiple environments with the same services in them
+        this allows you to differentiate between them.
+  nagios_hostname_type:
+    default: "unit"
+    type: string
+    description: |
+        Determines whether a server is identified by its unit name or
+        host name.  If you're in a virtual environment, "unit" is
+        probably best.  If you're using MaaS, you may prefer "host".
+  dont_blame_nrpe:
+    default: False
+    type: boolean
+    description: |
+        Setting dont_blame_nrpe to True sets dont_blame_nrpe=1 in nrpe.cfg
+        This config option which allows specifying arguments to nrpe scripts.
+        This can be a security risk so it is disabled by default. Nrpe is
+        compiled with --enable-command-args option by default, which this
+        option enables.
+  debug:
+    default: False
+    type: boolean
+    description: |
+        Setting debug to True enables debug=1 in nrpe.cfg
+  disk_root:
+    default: "-u GB -w 25% -c 20% -K 5%"
+    type: string
+    description: |
+        Root disk check. This can be made to also check non-root disk systems
+        as follows:
+            -u GB -w 20% -c 15% -r '/srv/juju/vol-' -C -u GB -w 25% -c 20%
+        The string '-p /' will be appended to this check, so you must finish
+        the string taking that into account. See the nagios check_disk plugin
+        help for further details.
+        .
+        Set to '' in order to disable this check.
+  zombies:
+    default: ""
+    type: string
+    description: |
+      Zombie processes check; defaults to disabled. To enable, set the desired
+      check_procs arguments pertaining to zombies, for example: "-w 3 -c 6 -s Z"
+  procs:
+    default: ""
+    type: string
+    description: |
+        Set thresholds for number of running processes.  Defaults to disabled;
+        to enable, specify 'auto' for the charm to generate thresholds based
+        on processor count, or manually provide arguments for check_procs, for
+        example: "-k -w 250 -c 300" to set warning and critical levels
+        manually and exclude kernel threads.
+  conntrack:
+    default: "-w 80 -c 90"
+    type: string
+    description: |
+        Check conntrack (net.netfilter.nf_conntrack_count) against thresholds.
+        .
+        Set to '' in order to disable this check.
+  users:
+    default: ""
+    type: string
+    description: |
+        Set thresholds for number of logged-in users.  Defaults to disabled;
+        to enable, manually provide arguments for check_user, for example:
+        "-w 20 -c 25"
+  monitors:
+    default: ''
+    type: string
+    description: |
+        Additional monitors defined in the monitors yaml format (see README)
+  hostgroups:
+    default: ""
+    type: string
+    description: Comma separated list of hostgroups to add for these hosts
+  hostcheck_inherit:
+    default: "server"
+    type: string
+    description: Hostcheck to inherit
+  sub_postfix:
+    default: ""
+    type: string
+    description: |
+        A string to be appended onto all the nrpe checks created by this charm
+        to avoid potential clashes with existing checks

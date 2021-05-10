@@ -9,7 +9,23 @@ description: |
   check_nrpe plugin on the Nagios host.
 summary: |
   Nagios Remote Plugin Executor Server
-
+tags:
+  - misc
+provides:
+  nrpe:
+    interface: nrpe
+  monitors:
+    interface: monitors
+requires:
+  nrpe-external-master:
+    interface: nrpe-external-master
+    scope: container
+  general-info:
+    interface: juju-info
+    scope: container
+  local-monitors:
+    interface: local-monitors
+    scope: container
 containers:
   nrpe-server:
     resource: nrpe-server-image
@@ -20,12 +36,10 @@ containers:
         location: /etc/nagios/certs/
       - storage: plugins
         location: /usr/lib/nagios/extra/
-
 resources:
   nrpe-server-image:
     type: oci-image
     description: OCI image for nrpe-server (https://hub.docker.com/r/binfalse/nrpe-server)
-
 storage:
   cfg:
     type: filesystem
