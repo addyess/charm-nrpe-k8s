@@ -47,7 +47,7 @@ Port Completion from Machine Charm
   - [ ] `run-nrpe-check`
 * Relations
   - [ ] `nrpe`
-  - [ ] `monitors`
+  - [x] `monitors`
   - [ ] `nrpe-external-master`
   - [ ] `general-info`
   - [ ] `local-monitors`

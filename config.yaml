@@ -9,12 +9,6 @@ options:
     type: int
     description: |
         Port on which nagios-nrpe-server will listen
-  nagios_address_type:
-    default: "private"
-    type: string
-    description: |
-        Determines whether the nagios host check should use the private
-        or public IP address of an instance.  Can be "private" or "public".
   nagios_host_context:
     default: "juju"
     type: string
@@ -99,9 +93,3 @@ options:
     default: "server"
     type: string
     description: Hostcheck to inherit
-  sub_postfix:
-    default: ""
-    type: string
-    description: |
-        A string to be appended onto all the nrpe checks created by this charm
-        to avoid potential clashes with existing checks
